@@ -61,25 +61,26 @@ class Calculator:
 
   def _log(self):
     if self.inMemoryNumber > 0 and self.inputNumber > 0:
-      self.inMemoryNumber = math.log(self.inMemoryNumber, self.inputNumber)
+      self.inMemoryNumber = math.log(self.inputNumber, self.inMemoryNumber)
     else:
       raise EvaluationError('Log of invalid values')
 
   def _equals(self):
     self.inMemoryNumber = self.inputNumber
-    return
 
   def click_dot(self):
-    self.inputPosition = 1
+    if self.inputPosition == 0:
+      self.inputPosition = 1
 
   def execute_operation(self, operation):
     {
-      Operations.ADDITION: lambda s: self._add(s),
-      Operations.SUBTRACTION: lambda s: self._subtract(s),
-      Operations.MULTIPLICATION: lambda s: self._multiply(s),
-      Operations.ADDITION: lambda s: self._divide(s),
-      Operations.EQUALS: lambda s: self._equals(s)
-    }[self.operation](self)
+      Operations.ADDITION: self._add,
+      Operations.SUBTRACTION: self._subtract,
+      Operations.MULTIPLICATION: self._multiply,
+      Operations.DIVISION: self._divide,
+      Operations.LOG: self._log,
+      Operations.EQUALS: self._equals
+    }[self.operation]()
     self.inputNumber = 0.
     self.inputPosition  = 0
     self.operation = operation
