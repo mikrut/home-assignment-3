@@ -8,7 +8,7 @@ class TestCalculator(unittest.TestCase):
     def test_input_integer(self):
         self.calc.inputDigit(2)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 2)
+        self.assertEqual(self.calc.getMemory(), 2)
 
     def test_input_not_digit(self):
         self.assertRaises(InputError, self.calc.inputDigit, 10)
@@ -20,46 +20,46 @@ class TestCalculator(unittest.TestCase):
         self.calc.execute_operation(Operations.ADDITION)
         self.calc.inputDigit(1)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 1)
+        self.assertEqual(self.calc.getMemory(), 1)
 
     def test_input_with_minus(self):
         self.calc.execute_operation(Operations.SUBTRACTION)
         self.calc.inputDigit(3)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, -3)
+        self.assertEqual(self.calc.getMemory(), -3)
 
     def test_input_with_multiply(self):
         self.calc.execute_operation(Operations.MULTIPLICATION)
         self.calc.inputDigit(2)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 0)
+        self.assertEqual(self.calc.getMemory(), 0)
 
     def test_input_with_divide(self):
         self.calc.execute_operation(Operations.DIVISION)
         self.calc.inputDigit(5)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 0)
+        self.assertEqual(self.calc.getMemory(), 0)
 
     def test_integer_addition(self):
         self.calc.inputDigit(1)
         self.calc.execute_operation(Operations.ADDITION)
         self.calc.inputDigit(2)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 3)
+        self.assertEqual(self.calc.getMemory(), 3)
 
     def test_integer_subtraction(self):
         self.calc.inputDigit(1)
         self.calc.execute_operation(Operations.SUBTRACTION)
         self.calc.inputDigit(2)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, -1)
+        self.assertEqual(self.calc.getMemory(), -1)
 
     def test_integer_multiply_integer(self):
         self.calc.inputDigit(5)
         self.calc.execute_operation(Operations.MULTIPLICATION)
         self.calc.inputDigit(3)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 15)
+        self.assertEqual(self.calc.getMemory(), 15)
 
     def test_integer_divide_zero(self):
         self.calc.inputDigit(1)
@@ -74,14 +74,14 @@ class TestCalculator(unittest.TestCase):
         self.calc.execute_operation(Operations.DIVISION)
         self.calc.inputDigit(2)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 5)
+        self.assertEqual(self.calc.getMemory(), 5)
 
     def test_rational_input(self):
         self.calc.inputDigit(3)
         self.calc.click_dot()
         self.calc.inputDigit(1)
         self.calc.inputDigit(4)
-        self.assertEqual(self.calc.inputNumber, 3.14)
+        self.assertEqual(self.calc.getInput(), 3.14)
 
     def test_ratonal_input_two_dots(self):
         self.calc.inputDigit(3)
@@ -89,7 +89,7 @@ class TestCalculator(unittest.TestCase):
         self.calc.inputDigit(1)
         self.calc.click_dot()
         self.calc.inputDigit(4)
-        self.assertEqual(self.calc.inputNumber, 3.14)
+        self.assertEqual(self.calc.getInput(), 3.14)
 
     def test_rational_addition(self):
         self.calc.inputDigit(3)
@@ -98,14 +98,14 @@ class TestCalculator(unittest.TestCase):
         self.calc.execute_operation(Operations.ADDITION)
         self.calc.inputDigit(1)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 4.2)
+        self.assertEqual(self.calc.getMemory(), 4.2)
 
     def test_log_evaluation(self):
         self.calc.inputDigit(2)
         self.calc.execute_operation(Operations.LOG)
         self.calc.inputDigit(4)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEqual(self.calc.inMemoryNumber, 2)
+        self.assertEqual(self.calc.getMemory(), 2)
 
     def test_log_filters_minus_x(self):
         self.calc.execute_operation(Operations.SUBTRACTION)
@@ -132,4 +132,14 @@ class TestCalculator(unittest.TestCase):
         self.calc.execute_operation(Operations.SUBTRACTION)
         self.calc.inputDigit(8)
         self.calc.execute_operation(Operations.EQUALS)
-        self.assertEquals(self.calc.inMemoryNumber, -3)
+        self.assertEquals(self.calc.getMemory(), -3)
+
+    def test_precision_minus(self):
+        self.calc.click_dot()
+        self.calc.inputDigit(3)
+        self.calc.execute_operation(Operations.SUBTRACTION)
+        self.calc.click_dot()
+        self.calc.inputDigit(1)
+        self.calc.execute_operation(Operations.EQUALS)
+        self.assertEquals(self.calc.getMemory(), 0.2)
+
